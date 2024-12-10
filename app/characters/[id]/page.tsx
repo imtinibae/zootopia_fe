@@ -1,58 +1,47 @@
-import React from 'react';
-import { promises as fs } from 'fs';
-import path from 'path';
+'use client';
 
-// Typage CSSProperties
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    textAlign: 'center',
-  },
-  gridContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '20px',
-    padding: '10px',
-    maxWidth: '1200px',
-    width: '90%',
-  },
-  card: {
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    padding: '10px',
-    fontSize: '0.9rem',
-    boxShadow: '2px 2px 5px rgba(0,0,0,0.1)',
-  },
-};
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-export default async function CharacterPage() {
-  try {
-    const filePath = path.join(process.cwd(), 'app/data/data.json');
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    const data = JSON.parse(fileContents);
+interface Person {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
 
-    return (
-      <div style={styles.container}>
-        <h1>Character List</h1>
-        <div style={styles.gridContainer}>
-          {data.animals?.map((persons: any, index: number) => (
-            <div key={index} style={styles.card}>
-              <div><strong> ID:</strong> {persons.id}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  } catch (error) {
-    console.error('Erreur dans le chargement des données', error);
-    return (
-      <div style={styles.container}>
-        <h1>Une erreur est survenue lors du chargement des animaux.</h1>
-      </div>
-    );
+export default function CharacterDetailPage({ params }: { params: { id: string } }) {
+  const [person, setPerson] = useState<Person | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/persons/${params.id}`);
+        if (!response.ok) {
+          throw new Error(`Erreur API : ${response.status}`);
+        }
+        const data = await response.json();
+        setPerson(data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+      }
+    };
+
+    fetchData();
+  }, [params.id]);
+
+  if (!person) {
+    return <div>Chargement des détails...</div>;
   }
+
+  return (
+    <div>
+      <h1>Détails de la personne</h1>
+      <div><strong>First Name:</strong> {person.firstName}</div>
+      <div><strong>Last Name:</strong> {person.lastName}</div>
+      <div><strong>Email:</strong> {person.email}</div>
+      <div><strong>Phone Number:</strong> {person.phoneNumber}</div>
+    </div>
+  );
 }
