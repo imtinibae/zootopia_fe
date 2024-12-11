@@ -52,7 +52,7 @@ export default function CharacterDetailPage({ params }: { params: { id: string }
       } else {
         clearInterval(interval);
       }
-    }, 1200); // Change de vitesse ici (en ms)
+    }, 1200); 
   };
 
   const typeText = (key: string, value: string) => {
@@ -68,7 +68,7 @@ export default function CharacterDetailPage({ params }: { params: { id: string }
         clearInterval(typingInterval);
         setIsTyping(false);
       }
-    }, 100); // Vitesse de l'effet de texte (en ms)
+    }, 100); 
   };
 
   if (!person) {
@@ -80,18 +80,18 @@ export default function CharacterDetailPage({ params }: { params: { id: string }
       fontFamily: 'VT323, monospace', 
       color: '#00ffcc', 
       background: '#000', 
-      height: '100vh', // Hauteur pour couvrir toute la page
+      height: '100vh', 
       display: 'flex', 
       flexDirection: 'column', 
-      justifyContent: 'center', // Centrer verticalement
-      alignItems: 'center', // Centrer horizontalement
+      justifyContent: 'center', 
+      alignItems: 'center', 
       padding: '20px'
     }}>
       <h1 style={{
         fontSize: '3rem', 
         textShadow: '2px 2px #000', 
         marginBottom: '20px', 
-        textAlign: 'center' // Centrer le titre
+        textAlign: 'center' 
       }}>
         Détails de la personne
       </h1>
@@ -109,7 +109,7 @@ export default function CharacterDetailPage({ params }: { params: { id: string }
         <strong>Phone Number:</strong> {displayedInfo.phoneNumber || '...'}
       </div>
 
-      {/* Afficher un indicateur de frappe */}
+  
       {isTyping && <div style={{
         color: '#00ffcc', 
         fontSize: '1.5rem', 

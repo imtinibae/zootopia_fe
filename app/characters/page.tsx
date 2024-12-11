@@ -125,7 +125,7 @@ export default function CharactersPage() {
         ))}
       </div>
 
-      {/* Pagination */}
+     
       <div style={styles.pagination}>
         <button
           style={styles.arrowButton}

@@ -62,7 +62,7 @@ export default function Navbar() {
             (e.currentTarget as HTMLElement).style.color = '';
           }}
         >
-          <Link href="/characters">Characters</Link> {/* Correction du lien */}
+          <Link href="/characters">Characters</Link> 
         </li>
         <li
           style={styles.listItem}

@@ -1,4 +1,3 @@
-// app/api/animal/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -19,12 +18,12 @@ export async function GET(
   try {
     const { id } = context.params;
 
-    // Chemin vers le fichier JSON des animaux
+    
     const filePath = path.join(process.cwd(), 'app/data/data.json');
     const fileContents = await fs.readFile(filePath, 'utf8');
-    const data = JSON.parse(fileContents); // On suppose que le fichier contient un objet { animals: [...] }
+    const data = JSON.parse(fileContents); 
 
-    // Trouver l'animal avec l'ID correspondant
+    
     const animal = data.animals.find((a: Animal) => a.id === parseInt(id, 10));
 
     if (!animal) {
@@ -35,11 +34,10 @@ export async function GET(
       );
     }
 
-    // Retourner les détails de l'animal trouvé
+    
     return NextResponse.json(animal);
   } catch (error) {
     console.error('Erreur API :', error);
-    // Retourner une erreur 500 en cas de problème interne
     return NextResponse.json({ error: 'Erreur interne' }, { status: 500 });
   }
 }
