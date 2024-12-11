@@ -1,76 +1,153 @@
+'use client';
+
 import Link from 'next/link';
-import React from 'react';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { useEffect, useState } from 'react';
 
-// Typage CSSProperties
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    textAlign: 'center',
-  },
-  gridContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '20px',
-    padding: '10px',
-    maxWidth: '1200px',
-    width: '90%',
-  },
-  card: {
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    padding: '10px',
-    fontSize: '0.9rem',
-    boxShadow: '2px 2px 5px rgba(0,0,0,0.1)',
-    textDecoration: 'none',
-    color: 'inherit',
-    transition: 'transform 0.2s ease-in-out',
-  },
-  cardHover: {
-    transform: 'scale(1.05)',
-  },
-};
+export default function AnimalsPage() {
+  const [animals, setAnimals] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Nombre d'éléments par page
+  const [totalItems, setTotalItems] = useState(0);
 
-export default async function AnimalsPage() {
-  try {
-    const filePath = path.join(process.cwd(), 'app/data/data.json');
-    const fileContents = await fs.readFile(filePath, 'utf8');
-    const data = JSON.parse(fileContents);
+  useEffect(() => {
+    // Récupérer la liste des animaux
+    fetch('/api/animals')
+      .then((response) => response.json())
+      .then((data) => {
+        setAnimals(data);
+        setTotalItems(data.length); // On met à jour le total des éléments
+      })
+      .catch((error) => console.error('Erreur :', error));
+  }, []);
 
-    return (
-      <div style={styles.container}>
-        <h1>Animals List</h1>
-        <div style={styles.gridContainer}>
-          {data.animals?.map((animal: any) => (
-            <Link
-              href={`/animals/${animal.id}`}
-              key={animal.id}
-              passHref
+  // Calculer les indices des éléments à afficher pour la page actuelle
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = animals.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Calculer le nombre total de pages
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Fonction pour changer la page
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Fonction pour changer la page par flèches
+  const handleArrowChange = (direction: string) => {
+    if (direction === 'next' && currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    } else if (direction === 'prev' && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Style adapté à ton thème de jeu vidéo
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      fontFamily: 'VT323, monospace',
+      background: 'radial-gradient(circle, #000000, #1a1a1a, #333333)',
+      color: '#00ffcc',
+      padding: '20px',
+    },
+    gridContainer: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '20px',
+      marginTop: '20px',
+    },
+    card: {
+      border: '1px solid #ccc',
+      padding: '10px',
+      borderRadius: '5px',
+      background: 'linear-gradient(135deg, #1a1a1a, #333333)',
+      color: '#00ffcc',
+      boxShadow: '0 4px 8px rgba(0, 255, 204, 0.4)',
+      transition: 'transform 0.3s ease, background 0.3s ease',
+    },
+    pagination: {
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '20px',
+      marginBottom: '20px',
+      alignItems: 'center',
+    },
+    pageButton: {
+      margin: '0 5px',
+      padding: '5px 10px',
+      cursor: 'pointer',
+      borderRadius: '5px',
+      border: '1px solid #00ffcc',
+      background: 'transparent',
+      color: '#00ffcc',
+      transition: 'background 0.3s ease, transform 0.3s ease',
+    },
+    activePageButton: {
+      backgroundColor: '#00ffcc',
+      color: '#000',
+    },
+    arrowButton: {
+      fontSize: '1.5rem',
+      cursor: 'pointer',
+      color: '#00ffcc',
+      background: 'transparent',
+      border: 'none',
+      padding: '5px 15px',
+      transition: 'transform 0.3s ease',
+    },
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1 style={{ fontSize: '3rem', textShadow: '2px 2px #000', marginBottom: '20px' }}>
+        CHOOSE YOUR ANIMALS
+      </h1>
+
+      <div style={styles.gridContainer}>
+        {currentItems.map((animal: any) => (
+          <Link href={`/animals/${animal.id}`} key={animal.id}>
+            <div
+              style={styles.card}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = 'none';
+              }}
             >
-              <div
-                style={styles.card}
-                className="card-hover"
-              >
-                <div><strong>Name:</strong> {animal.name}</div>
-                <div><strong>Species:</strong> {animal.species}</div>
-                <div><strong>Breed:</strong> {animal.breed}</div>
-              </div>
-            </Link>
-          ))}
+              <div><strong>Nom :</strong> {animal.name}</div>
+              <div><strong>Espèce :</strong> {animal.species}</div>
+              <div><strong>Race :</strong> {animal.breed}</div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div style={styles.pagination}>
+        <button
+          style={styles.arrowButton}
+          onClick={() => handleArrowChange('prev')}
+          disabled={currentPage === 1}
+        >
+          {'<'}
+        </button>
+
+        <div style={{ color: '#00ffcc', fontSize: '1.5rem', padding: '0 10px' }}>
+          {currentPage} / {totalPages}
         </div>
+
+        <button
+          style={styles.arrowButton}
+          onClick={() => handleArrowChange('next')}
+          disabled={currentPage === totalPages}
+        >
+          {'>'}
+        </button>
       </div>
-    );
-  } catch (error) {
-    console.error('Erreur dans le chargement des données', error);
-    return (
-      <div style={styles.container}>
-        <h1>Une erreur est survenue lors du chargement des animaux.</h1>
-      </div>
-    );
-  }
+    </div>
+  );
 }
