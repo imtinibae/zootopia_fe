@@ -6,34 +6,31 @@ import { useEffect, useState } from 'react';
 export default function AnimalsPage() {
   const [animals, setAnimals] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Nombre d'éléments par page
+  const [itemsPerPage] = useState(10); 
   const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
-    // Récupérer la liste des animaux
     fetch('/api/animals')
       .then((response) => response.json())
       .then((data) => {
         setAnimals(data);
-        setTotalItems(data.length); // On met à jour le total des éléments
+        setTotalItems(data.length); 
       })
       .catch((error) => console.error('Erreur :', error));
   }, []);
 
-  // Calculer les indices des éléments à afficher pour la page actuelle
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = animals.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Calculer le nombre total de pages
+
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Fonction pour changer la page
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  // Fonction pour changer la page par flèches
   const handleArrowChange = (direction: string) => {
     if (direction === 'next' && currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -42,7 +39,7 @@ export default function AnimalsPage() {
     }
   };
 
-  // Style adapté à ton thème de jeu vidéo
+
   const styles = {
     container: {
       display: 'flex',
@@ -126,7 +123,7 @@ export default function AnimalsPage() {
         ))}
       </div>
 
-      {/* Pagination */}
+   
       <div style={styles.pagination}>
         <button
           style={styles.arrowButton}

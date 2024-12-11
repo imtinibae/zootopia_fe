@@ -6,34 +6,33 @@ import { useEffect, useState } from 'react';
 export default function CharactersPage() {
   const [persons, setPersons] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Nombre d'éléments par page
+  const [itemsPerPage] = useState(10); 
   const [totalItems, setTotalItems] = useState(0);
 
   useEffect(() => {
-    // Récupérer la liste des personnes
+    
     fetch('/api/persons')
       .then((response) => response.json())
       .then((data) => {
         setPersons(data);
-        setTotalItems(data.length); // On met à jour le total des éléments
+        setTotalItems(data.length); 
       })
       .catch((error) => console.error('Erreur :', error));
   }, []);
 
-  // Calculer les indices des éléments à afficher pour la page actuelle
+ 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = persons.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Calculer le nombre total de pages
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Fonction pour changer la page
+ 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  // Fonction pour changer la page par flèches
+
   const handleArrowChange = (direction: string) => {
     if (direction === 'next' && currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -42,16 +41,19 @@ export default function CharactersPage() {
     }
   };
 
-  // Style adapté à ton thème de jeu vidéo
+ 
   const styles = {
     container: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      justifyContent: 'space-between',
+      minHeight: '100vh', 
       fontFamily: 'VT323, monospace',
       background: 'radial-gradient(circle, #000000, #1a1a1a, #333333)',
       color: '#00ffcc',
       padding: '20px',
+      margin: 0,
     },
     gridContainer: {
       display: 'grid',
@@ -125,7 +127,6 @@ export default function CharactersPage() {
         ))}
       </div>
 
-     
       <div style={styles.pagination}>
         <button
           style={styles.arrowButton}

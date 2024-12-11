@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Frontend - Zootopia 
 
-## Getting Started
+Bienvenue dans la partie front-end de l'application de gestion de personnages et d'animaux. Ce projet a été créé avec Next.js.
 
-First, run the development server:
+Prérequis
+Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
 
-```bash
+Node.js (version 16 ou supérieure)
+npm ou yarn
+Étapes
+Clonez le dépôt du projet :
+bash
+Copier le code
+git clone <URL_DE_VOTRE_REPO>
+Accédez au dossier frontend :
+bash
+Copier le code
+cd frontend
+Installez les dépendances :
+bash
+Copier le code
+npm install
+# ou
+yarn install
+Démarrage du projet
+Pour lancer le serveur de développement local, exécutez la commande suivante :
+
+bash
+Copier le code
 npm run dev
-# or
+# ou
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Ensuite, ouvrez votre navigateur et accédez à : http://localhost:3000.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Enjoy ! 

@@ -2,13 +2,13 @@
 
 import React from "react";
 
-// Ajout de la police Google Fonts avec style dynamique
+
 const googleFontsLink = document.createElement("link");
 googleFontsLink.href = "https://fonts.googleapis.com/css2?family=VT323&display=swap";
 googleFontsLink.rel = "stylesheet";
 document.head.appendChild(googleFontsLink);
 
-// Styles personnalisés
+
 const styles: Record<string, React.CSSProperties> = {
   container: {
     display: "flex",
@@ -61,7 +61,6 @@ const styles: Record<string, React.CSSProperties> = {
 export default function Page() {
   return (
     <div style={styles.container}>
-      {/* Section "Character" */}
       <div
         style={styles.half}
         className="character"
@@ -93,7 +92,7 @@ export default function Page() {
         </a>
       </div>
 
-      {/* Section "Animals" */}
+  
       <div
         style={styles.half}
         className="animal"

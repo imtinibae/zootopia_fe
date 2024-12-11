@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 
 interface Animal {
   id: number;
@@ -17,19 +16,26 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
   const [animal, setAnimal] = useState<Animal | null>(null);
   const [displayedInfo, setDisplayedInfo] = useState<{ [key: string]: string }>({});
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!params?.id) {
+      setError('Aucun ID fourni pour récupérer les données.');
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch(`/api/animals/${params.id}`);
         if (!response.ok) {
           throw new Error(`Erreur API : ${response.status}`);
         }
-        const data = await response.json();
+        const data: Animal = await response.json();
         setAnimal(data);
         typeWriterEffect(data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
+      } catch (err) {
+        console.error(err);
+        setError('Erreur lors de la récupération des données.');
       }
     };
 
@@ -74,6 +80,14 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
     }, 100); 
   };
 
+  if (error) {
+    return (
+      <div style={{ color: 'red', textAlign: 'center', marginTop: '50px' }}>
+        {error}
+      </div>
+    );
+  }
+
   if (!animal) {
     return <div>Chargement des détails...</div>;
   }
@@ -114,14 +128,14 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
       <div style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '10px' }}>
         <strong>Weight:</strong> {displayedInfo.weight || '...'}
       </div>
-
-      {/* Afficher un indicateur de frappe */}
+      
       {isTyping && <div style={{
         color: '#00ffcc', 
         fontSize: '1.5rem', 
         marginTop: '10px', 
         textAlign: 'center'
-      }}></div>}
+      }}>
+      </div>}
     </div>
   );
 }
