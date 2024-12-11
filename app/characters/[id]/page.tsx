@@ -3,30 +3,28 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-interface Animal {
+interface Person {
   id: number;
-  name: string;
-  species: string;
-  breed: string;
-  color: string;
-  weight: string;
-  ownerId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
 }
 
-export default function AnimalDetailPage({ params }: { params: { id: string } }) {
-  const [animal, setAnimal] = useState<Animal | null>(null);
+export default function CharacterDetailPage({ params }: { params: { id: string } }) {
+  const [person, setPerson] = useState<Person | null>(null);
   const [displayedInfo, setDisplayedInfo] = useState<{ [key: string]: string }>({});
   const [isTyping, setIsTyping] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/animals/${params.id}`);
+        const response = await fetch(`/api/persons/${params.id}`);
         if (!response.ok) {
           throw new Error(`Erreur API : ${response.status}`);
         }
         const data = await response.json();
-        setAnimal(data);
+        setPerson(data);
         typeWriterEffect(data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
@@ -36,13 +34,12 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
     fetchData();
   }, [params.id]);
 
-  const typeWriterEffect = (animalData: Animal) => {
+  const typeWriterEffect = (personData: Person) => {
     const fields = [
-      { key: 'name', value: animalData.name },
-      { key: 'species', value: animalData.species },
-      { key: 'breed', value: animalData.breed },
-      { key: 'color', value: animalData.color },
-      { key: 'weight', value: animalData.weight }
+      { key: 'firstName', value: personData.firstName },
+      { key: 'lastName', value: personData.lastName },
+      { key: 'email', value: personData.email },
+      { key: 'phoneNumber', value: personData.phoneNumber }
     ];
 
     let i = 0;
@@ -74,7 +71,7 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
     }, 100); // Vitesse de l'effet de texte (en ms)
   };
 
-  if (!animal) {
+  if (!person) {
     return <div>Chargement des détails...</div>;
   }
 
@@ -96,23 +93,20 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
         marginBottom: '20px', 
         textAlign: 'center' // Centrer le titre
       }}>
-        Détails de l'animal
+        Détails de la personne
       </h1>
 
       <div style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '10px' }}>
-        <strong>Name:</strong> {displayedInfo.name || '...'}
+        <strong>First Name:</strong> {displayedInfo.firstName || '...'}
       </div>
       <div style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '10px' }}>
-        <strong>Species:</strong> {displayedInfo.species || '...'}
+        <strong>Last Name:</strong> {displayedInfo.lastName || '...'}
       </div>
       <div style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '10px' }}>
-        <strong>Breed:</strong> {displayedInfo.breed || '...'}
+        <strong>Email:</strong> {displayedInfo.email || '...'}
       </div>
       <div style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '10px' }}>
-        <strong>Color:</strong> {displayedInfo.color || '...'}
-      </div>
-      <div style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '10px' }}>
-        <strong>Weight:</strong> {displayedInfo.weight || '...'}
+        <strong>Phone Number:</strong> {displayedInfo.phoneNumber || '...'}
       </div>
 
       {/* Afficher un indicateur de frappe */}

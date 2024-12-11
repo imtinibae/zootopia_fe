@@ -62,7 +62,7 @@ export default function Navbar() {
             (e.currentTarget as HTMLElement).style.color = '';
           }}
         >
-          <Link href="/characters">Personnes</Link> {/* Correction du lien */}
+          <Link href="/characters">Characters</Link> {/* Correction du lien */}
         </li>
         <li
           style={styles.listItem}
@@ -78,7 +78,7 @@ export default function Navbar() {
             (e.currentTarget as HTMLElement).style.color = '';
           }}
         >
-          <Link href="/animals">Animaux</Link> 
+          <Link href="/animals">Animals</Link> 
         </li>
       </ul>
     </nav>

@@ -55,7 +55,7 @@ export default function AnimalDetailPage({ params }: { params: { id: string } })
       } else {
         clearInterval(interval);
       }
-    }, 1200); // Change de vitesse ici (en ms)
+    }, 1200); 
   };
 
   const typeText = (key: string, value: string) => {
